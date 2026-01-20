@@ -1,1 +1,855 @@
-embranco
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rosi Minikowski - Moda Feminina</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* RESET E CONFIGURAÇÕES GERAIS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        :root {
+            --primary: #2C3E50;
+            --secondary: #95A5A6;
+            --accent: #E8C8C8;
+            --whatsapp: #25D366;
+            --text-dark: #2C3E50;
+            --text-light: #7F8C8D;
+            --bg-light: #FAF9F7;
+            --bg-white: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.08);
+            --shadow-hover: rgba(0, 0, 0, 0.12);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 100px;
+        }
+        
+        /* CABEÇALHO */
+        .header {
+            background: linear-gradient(135deg, var(--bg-white) 0%, #f8f4f0 100%);
+            padding: 20px 15px 25px;
+            text-align: center;
+            border-bottom: 1px solid rgba(44, 62, 80, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo-container {
+            margin-bottom: 15px;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--bg-white);
+            box-shadow: 0 5px 15px var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .brand-name {
+            font-size: 1.4rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        
+        .brand-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions {
+            background-color: var(--bg-white);
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto;
+            box-shadow: 0 3px 10px var(--shadow);
+            border-left: 4px solid var(--accent);
+        }
+        
+        /* CATÁLOGO DE PRODUTOS */
+        .catalog {
+            padding: 20px 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .catalog-title {
+            font-size: 1.1rem;
+            font-weight: 400;
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .product-card {
+            background-color: var(--bg-white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: var(--transition);
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-hover);
+        }
+        
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+        
+        .product-code {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            backdrop-filter: blur(5px);
+        }
+        
+        .product-selector {
+            padding: 18px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid rgba(44, 62, 80, 0.05);
+        }
+        
+        .select-label {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+        
+        .custom-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--secondary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .custom-checkbox::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: var(--whatsapp);
+            border-radius: 3px;
+            opacity: 0;
+            transform: scale(0);
+            transition: var(--transition);
+        }
+        
+        input[type="checkbox"] {
+            display: none;
+        }
+        
+        input[type="checkbox"]:checked + .custom-checkbox {
+            border-color: var(--whatsapp);
+        }
+        
+        input[type="checkbox"]:checked + .custom-checkbox::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* BOTÃO WHATSAPP FLUTUANTE */
+        .whatsapp-fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--whatsapp);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            transition: var(--transition);
+            transform: scale(0);
+            opacity: 0;
+        }
+        
+        .whatsapp-fab.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .whatsapp-fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.5);
+        }
+        
+        .whatsapp-fab i {
+            color: white;
+            font-size: 28px;
+        }
+        
+        .fab-counter {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--primary);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* MODAL PARA NOME */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 62, 80, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background-color: var(--bg-white);
+            border-radius: var(--radius);
+            width: 90%;
+            max-width: 400px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+        
+        .modal-overlay.show .modal {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+        
+        .modal-header p {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #E0E0E0;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background-color: var(--bg-light);
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(232, 200, 200, 0.2);
+        }
+        
+        .modal-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .btn {
+            padding: 15px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--whatsapp);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1DA851;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid #E0E0E0;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #F5F5F5;
+        }
+        
+        .skip-text {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 10px;
+        }
+        
+        /* RODAPÉ */
+        .footer {
+            text-align: center;
+            padding: 30px 15px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            max-width: 600px;
+            margin: 40px auto 0;
+            border-top: 1px solid rgba(44, 62, 80, 0.05);
+        }
+        
+        /* LOADING */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        /* RESPONSIVIDADE */
+        @media (min-width: 768px) {
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header {
+                padding: 25px 20px 30px;
+            }
+            
+            .logo {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .brand-name {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        /* ANIMAÇÕES */
+        @keyframes pulse {
+            0% { box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 5px 25px rgba(37, 211, 102, 0.6); }
+            100% { box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* SCROLLBAR PERSONALIZADA */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- CABEÇALHO -->
+    <header class="header">
+        <div class="logo-container">
+            <img src="fotos/logo.jpg" alt="Rosi Minikowski" class="logo">
+        </div>
+        <h1 class="brand-name">Rosi Minikowski</h1>
+        <p class="brand-subtitle">Moda Feminina</p>
+        <div class="instructions">
+            Selecione as peças de seu interesse<br>
+            Envie sua seleção para consultar disponibilidade
+        </div>
+    </header>
+    
+    <!-- CATÁLOGO -->
+    <main class="catalog">
+        <h2 class="catalog-title">Coleção Atual</h2>
+        <div class="product-grid" id="productGrid">
+            <!-- Produtos serão gerados via JavaScript -->
+        </div>
+        <div class="loading" id="loading">
+            <i class="fas fa-spinner fa-spin"></i> Carregando catálogo...
+        </div>
+    </main>
+    
+    <!-- BOTÃO WHATSAPP FLUTUANTE -->
+    <div class="whatsapp-fab" id="whatsappFab">
+        <div class="fab-counter" id="fabCounter">0</div>
+        <i class="fab fa-whatsapp"></i>
+    </div>
+    
+    <!-- MODAL PARA NOME -->
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Personalize sua mensagem</h3>
+                <p>Como gostaria de ser chamada?</p>
+            </div>
+            <div class="input-group">
+                <label for="clientName">Nome ou apelido (opcional)</label>
+                <input type="text" id="clientName" class="name-input" 
+                       placeholder="Ex: Ana, Maria, Carla..." maxlength="20">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="sendWhatsApp">
+                    <i class="fab fa-whatsapp"></i> Enviar via WhatsApp
+                </button>
+                <button class="btn btn-secondary" id="skipName">
+                    Pular e enviar
+                </button>
+            </div>
+            <p class="skip-text">Esta informação será incluída na mensagem para a loja</p>
+        </div>
+    </div>
+    
+    <!-- RODAPÉ -->
+    <footer class="footer">
+        <p>© 2024 Rosi Minikowski - Moda Feminina</p>
+        <p>Todas as peças são únicas e selecionadas com cuidado especial</p>
+    </footer>
+    
+    <script>
+        // CONFIGURAÇÕES
+        const WHATSAPP_NUMBER = "5543998258729"; // Seu número do WhatsApp
+        const TOTAL_PRODUCTS = 183; // Total de produtos no catálogo
+        const LOAD_DELAY = 50; // Delay entre carregamento de produtos (ms)
+        
+        // VARIÁVEIS GLOBAIS
+        let selectedProducts = new Set();
+        let allProducts = [];
+        
+        // ELEMENTOS DOM
+        const productGrid = document.getElementById('productGrid');
+        const loading = document.getElementById('loading');
+        const whatsappFab = document.getElementById('whatsappFab');
+        const fabCounter = document.getElementById('fabCounter');
+        const nameModal = document.getElementById('nameModal');
+        const clientNameInput = document.getElementById('clientName');
+        const sendWhatsAppBtn = document.getElementById('sendWhatsApp');
+        const skipNameBtn = document.getElementById('skipName');
+        
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            setupEventListeners();
+        });
+        
+        // CARREGAR PRODUTOS
+        function loadProducts() {
+            loading.classList.add('show');
+            
+            // Criar array de produtos de 001 a 183
+            for (let i = 1; i <= TOTAL_PRODUCTS; i++) {
+                const productCode = i.toString().padStart(3, '0');
+                allProducts.push({
+                    code: productCode,
+                    image: `fotos/${productCode}.jpg`,
+                    alt: `Produto #${productCode}`
+                });
+            }
+            
+            // Renderizar produtos com delay para animação
+            renderProductsWithDelay();
+        }
+        
+        function renderProductsWithDelay() {
+            let index = 0;
+            
+            function renderNextProduct() {
+                if (index >= allProducts.length) {
+                    loading.classList.remove('show');
+                    return;
+                }
+                
+                const product = allProducts[index];
+                const productElement = createProductElement(product);
+                productGrid.appendChild(productElement);
+                
+                index++;
+                setTimeout(renderNextProduct, LOAD_DELAY);
+            }
+            
+            renderNextProduct();
+        }
+        
+        // CRIAR ELEMENTO DO PRODUTO
+        function createProductElement(product) {
+            const productId = `product-${product.code}`;
+            
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.style.animationDelay = `${Math.random() * 0.5}s`;
+            
+            productCard.innerHTML = `
+                <div class="product-image-container">
+                    <img src="${product.image}" alt="${product.alt}" class="product-image" 
+                         onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"300\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2395A5A6\" stroke-width=\"1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"></circle><polyline points=\"21 15 16 10 5 21\"></polyline></svg>'">
+                    <div class="product-code">#${product.code}</div>
+                </div>
+                <div class="product-selector">
+                    <label for="${productId}" class="select-label">
+                        <input type="checkbox" id="${productId}" data-code="${product.code}">
+                        <span class="custom-checkbox"></span>
+                        <span>Selecionar esta peça</span>
+                    </label>
+                </div>
+            `;
+            
+            return productCard;
+        }
+        
+        // CONFIGURAR EVENT LISTENERS
+        function setupEventListeners() {
+            // Delegar eventos de checkbox
+            productGrid.addEventListener('change', function(e) {
+                if (e.target.type === 'checkbox') {
+                    const productCode = e.target.dataset.code;
+                    
+                    if (e.target.checked) {
+                        selectedProducts.add(productCode);
+                    } else {
+                        selectedProducts.delete(productCode);
+                    }
+                    
+                    updateFab();
+                }
+            });
+            
+            // Botão WhatsApp flutuante
+            whatsappFab.addEventListener('click', function() {
+                if (selectedProducts.size === 0) return;
+                showNameModal();
+            });
+            
+            // Botões do modal
+            sendWhatsAppBtn.addEventListener('click', sendToWhatsApp);
+            skipNameBtn.addEventListener('click', function() {
+                clientNameInput.value = '';
+                sendToWhatsApp();
+            });
+            
+            // Fechar modal ao clicar fora
+            nameModal.addEventListener('click', function(e) {
+                if (e.target === nameModal) {
+                    hideNameModal();
+                }
+            });
+            
+            // Permitir Enter no campo de nome
+            clientNameInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendToWhatsApp();
+                }
+            });
+        }
+        
+        // ATUALIZAR BOTÃO FLUTUANTE
+        function updateFab() {
+            const count = selectedProducts.size;
+            
+            if (count > 0) {
+                fabCounter.textContent = count;
+                whatsappFab.classList.add('show', 'pulse');
+            } else {
+                whatsappFab.classList.remove('show', 'pulse');
+            }
+        }
+        
+        // MOSTRAR MODAL DE NOME
+        function showNameModal() {
+            nameModal.classList.add('show');
+            clientNameInput.focus();
+        }
+        
+        // ESCONDER MODAL DE NOME
+        function hideNameModal() {
+            nameModal.classList.remove('show');
+        }
+        
+        // GERAR MENSAGEM PARA WHATSAPP
+        function generateMessage(clientName = '') {
+            const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '');
+            let message = `Olá! Tenho interesse em algumas das suas peças 😊\n\nSeleciono estas para consultar:\n\n`;
+            
+            let productNumber = 1;
+            selectedProducts.forEach(code => {
+                const photoUrl = `${baseUrl}fotos/${code}.jpg`;
+                message += `Peça #${code}\n`;
+                message += `📸 ${photoUrl}\n\n`;
+                productNumber++;
+            });
+            
+            message += `No total são ${selectedProducts.size} peça${selectedProducts.size > 1 ? 's' : ''}.\n\n`;
+            message += `Tem disponibilidade?\n\n`;
+            
+            if (clientName.trim()) {
+                message += `Abraços,\n${clientName.trim()}`;
+            } else {
+                message += `Aguardo seu retorno!`;
+            }
+            
+            return message;
+        }
+        
+        // ENVIAR PARA WHATSAPP
+        function sendToWhatsApp() {
+            const clientName = clientNameInput.value.trim();
+            const message = generateMessage(clientName);
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            
+            // Abrir WhatsApp
+            window.open(whatsappUrl, '_blank');
+            
+            // Resetar seleção
+            selectedProducts.clear();
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            updateFab();
+            hideNameModal();
+            clientNameInput.value = '';
+            
+            // Feedback visual
+            showNotification('Seleção enviada com sucesso!');
+        }
+        
+        // MOSTRAR NOTIFICAÇÃO
+        function showNotification(text) {
+            // Remover notificação anterior se existir
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = text;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: var(--whatsapp);
+                color: white;
+                padding: 12px 24px;
+                border-radius: var(--radius);
+                z-index: 3000;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                font-weight: 500;
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+        
+        // Adicionar animações CSS para notificação
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(-50%) translateY(-20px); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // TOQUE NAS IMAGENS PARA AMPLIAR (opcional)
+        productGrid.addEventListener('click', function(e) {
+            if (e.target.classList.contains('product-image')) {
+                const imgSrc = e.target.src;
+                const productCode = e.target.parentElement.querySelector('.product-code').textContent;
+                
+                // Criar visualizador de imagem
+                const viewer = document.createElement('div');
+                viewer.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0,0,0,0.9);
+                    z-index: 2000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: zoom-out;
+                `;
+                
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.alt = productCode;
+                img.style.cssText = `
+                    max-width: 95%;
+                    max-height: 95%;
+                    object-fit: contain;
+                    border-radius: 8px;
+                `;
+                
+                viewer.appendChild(img);
+                document.body.appendChild(viewer);
+                
+                viewer.addEventListener('click', function() {
+                    viewer.remove();
+                });
+                
+                // Fechar com ESC
+                document.addEventListener('keydown', function closeViewer(e) {
+                    if (e.key === 'Escape') {
+                        viewer.remove();
+                        document.removeEventListener('keydown', closeViewer);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
