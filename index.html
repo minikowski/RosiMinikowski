@@ -147,6 +147,7 @@
             width: 100%;
             height: 280px;
             overflow: hidden;
+            cursor: pointer;
         }
         
         .product-image {
@@ -407,6 +408,62 @@
             margin-top: 10px;
         }
         
+        /* MODAL PARA FOTO EM TELA CHEIA */
+        .photo-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            cursor: zoom-out;
+        }
+        
+        .photo-modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .photo-modal-container {
+            position: relative;
+            max-width: 95%;
+            max-height: 95%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .photo-modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        .photo-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 5px;
+            opacity: 0.8;
+        }
+        
+        .photo-modal-close:hover {
+            opacity: 1;
+        }
+        
         /* RODAPÉ */
         .footer {
             text-align: center;
@@ -490,7 +547,7 @@
     <!-- CABEÇALHO -->
     <header class="header">
         <div class="logo-container">
-            <img src="fotos/logo.jpg" alt="Rosi Minikowski" class="logo">
+            <img src="logo.jpg" alt="Rosi Minikowski" class="logo">
         </div>
         <h1 class="brand-name">Rosi Minikowski</h1>
         <p class="brand-subtitle">Moda Feminina</p>
@@ -510,6 +567,14 @@
             <i class="fas fa-spinner fa-spin"></i> Carregando catálogo...
         </div>
     </main>
+    
+    <!-- MODAL PARA FOTO EM TELA CHEIA -->
+    <div class="photo-modal-overlay" id="photoModal">
+        <div class="photo-modal-container">
+            <button class="photo-modal-close" id="photoModalClose">&times;</button>
+            <img id="photoModalImage" class="photo-modal-image" src="" alt="">
+        </div>
+    </div>
     
     <!-- BOTÃO WHATSAPP FLUTUANTE -->
     <div class="whatsapp-fab" id="whatsappFab">
@@ -549,9 +614,9 @@
     
     <script>
         // CONFIGURAÇÕES
-        const WHATSAPP_NUMBER = "5543998258729"; // Seu número do WhatsApp
-        const TOTAL_PRODUCTS = 183; // Total de produtos no catálogo
-        const LOAD_DELAY = 50; // Delay entre carregamento de produtos (ms)
+        const WHATSAPP_NUMBER = "5543998258729";
+        const TOTAL_PRODUCTS = 183;
+        const LOAD_DELAY = 50;
         
         // VARIÁVEIS GLOBAIS
         let selectedProducts = new Set();
@@ -566,6 +631,9 @@
         const clientNameInput = document.getElementById('clientName');
         const sendWhatsAppBtn = document.getElementById('sendWhatsApp');
         const skipNameBtn = document.getElementById('skipName');
+        const photoModal = document.getElementById('photoModal');
+        const photoModalImage = document.getElementById('photoModalImage');
+        const photoModalClose = document.getElementById('photoModalClose');
         
         // INICIALIZAÇÃO
         document.addEventListener('DOMContentLoaded', function() {
@@ -582,7 +650,7 @@
                 const productCode = i.toString().padStart(3, '0');
                 allProducts.push({
                     code: productCode,
-                    image: `fotos/${productCode}.jpg`,
+                    image: `fotos/${productCode}.jpeg`,  // CORREÇÃO: .jpg para .jpeg
                     alt: `Produto #${productCode}`
                 });
             }
@@ -622,6 +690,7 @@
             productCard.innerHTML = `
                 <div class="product-image-container">
                     <img src="${product.image}" alt="${product.alt}" class="product-image" 
+                         data-code="${product.code}"
                          onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"300\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2395A5A6\" stroke-width=\"1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"></circle><polyline points=\"21 15 16 10 5 21\"></polyline></svg>'">
                     <div class="product-code">#${product.code}</div>
                 </div>
@@ -680,6 +749,30 @@
                     sendToWhatsApp();
                 }
             });
+            
+            // Eventos para o modal de foto em tela cheia
+            photoModalClose.addEventListener('click', hidePhotoModal);
+            photoModal.addEventListener('click', function(e) {
+                if (e.target === photoModal) {
+                    hidePhotoModal();
+                }
+            });
+            
+            // Fechar modal com tecla ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    hidePhotoModal();
+                }
+            });
+            
+            // Delegar evento de clique nas imagens para abrir em tela cheia
+            productGrid.addEventListener('click', function(e) {
+                if (e.target.classList.contains('product-image')) {
+                    const imgSrc = e.target.src;
+                    const productCode = e.target.dataset.code;
+                    showPhotoModal(imgSrc, productCode);
+                }
+            });
         }
         
         // ATUALIZAR BOTÃO FLUTUANTE
@@ -705,6 +798,20 @@
             nameModal.classList.remove('show');
         }
         
+        // MOSTRAR MODAL DE FOTO EM TELA CHEIA
+        function showPhotoModal(imgSrc, productCode) {
+            photoModalImage.src = imgSrc;
+            photoModalImage.alt = `Produto #${productCode} - Vista ampliada`;
+            photoModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // ESCONDER MODAL DE FOTO EM TELA CHEIA
+        function hidePhotoModal() {
+            photoModal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+        
         // GERAR MENSAGEM PARA WHATSAPP
         function generateMessage(clientName = '') {
             const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '');
@@ -712,7 +819,7 @@
             
             let productNumber = 1;
             selectedProducts.forEach(code => {
-                const photoUrl = `${baseUrl}fotos/${code}.jpg`;
+                const photoUrl = `${baseUrl}fotos/${code}.jpeg`;  // CORREÇÃO: .jpg para .jpeg
                 message += `Peça #${code}\n`;
                 message += `📸 ${photoUrl}\n\n`;
                 productNumber++;
@@ -801,55 +908,6 @@
             }
         `;
         document.head.appendChild(style);
-        
-        // TOQUE NAS IMAGENS PARA AMPLIAR (opcional)
-        productGrid.addEventListener('click', function(e) {
-            if (e.target.classList.contains('product-image')) {
-                const imgSrc = e.target.src;
-                const productCode = e.target.parentElement.querySelector('.product-code').textContent;
-                
-                // Criar visualizador de imagem
-                const viewer = document.createElement('div');
-                viewer.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(0,0,0,0.9);
-                    z-index: 2000;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: zoom-out;
-                `;
-                
-                const img = document.createElement('img');
-                img.src = imgSrc;
-                img.alt = productCode;
-                img.style.cssText = `
-                    max-width: 95%;
-                    max-height: 95%;
-                    object-fit: contain;
-                    border-radius: 8px;
-                `;
-                
-                viewer.appendChild(img);
-                document.body.appendChild(viewer);
-                
-                viewer.addEventListener('click', function() {
-                    viewer.remove();
-                });
-                
-                // Fechar com ESC
-                document.addEventListener('keydown', function closeViewer(e) {
-                    if (e.key === 'Escape') {
-                        viewer.remove();
-                        document.removeEventListener('keydown', closeViewer);
-                    }
-                });
-            }
-        });
     </script>
 </body>
 </html>
