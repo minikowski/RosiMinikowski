@@ -145,33 +145,36 @@
         .product-image-container {
             position: relative;
             width: 100%;
-            height: 280px;
+            height: 380px; /* Aumentado para 380px para fotos retrato */
             overflow: hidden;
+            background-color: #f8f8f8;
             cursor: pointer;
         }
         
         .product-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* Alterado de 'cover' para 'contain' para mostrar toda a foto */
             transition: transform 0.6s ease;
+            background-color: white;
         }
         
         .product-card:hover .product-image {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
         
         .product-code {
             position: absolute;
-            bottom: 15px;
+            top: 15px;
             left: 15px;
             background-color: rgba(255, 255, 255, 0.9);
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 500;
             color: var(--text-dark);
             backdrop-filter: blur(5px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         
         .product-selector {
@@ -547,7 +550,7 @@
     <!-- CABEÇALHO -->
     <header class="header">
         <div class="logo-container">
-            <img src="logo.jpg" alt="Rosi Minikowski" class="logo">
+            <img src="fotos/logo.jpg" alt="Rosi Minikowski" class="logo"> <!-- CORRIGIDO: caminho do logo -->
         </div>
         <h1 class="brand-name">Rosi Minikowski</h1>
         <p class="brand-subtitle">Moda Feminina</p>
@@ -650,7 +653,7 @@
                 const productCode = i.toString().padStart(3, '0');
                 allProducts.push({
                     code: productCode,
-                    image: `fotos/${productCode}.jpeg`,  // CORREÇÃO: .jpg para .jpeg
+                    image: `fotos/${productCode}.jpeg`,
                     alt: `Produto #${productCode}`
                 });
             }
@@ -691,7 +694,7 @@
                 <div class="product-image-container">
                     <img src="${product.image}" alt="${product.alt}" class="product-image" 
                          data-code="${product.code}"
-                         onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"300\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2395A5A6\" stroke-width=\"1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"></circle><polyline points=\"21 15 16 10 5 21\"></polyline></svg>'">
+                         onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"450\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"%2395A5A6\" stroke-width=\"1\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" ry=\"2\"></rect><circle cx=\"8.5\" cy=\"8.5\" r=\"1.5\"></circle><polyline points=\"21 15 16 10 5 21\"></polyline></svg>'">
                     <div class="product-code">#${product.code}</div>
                 </div>
                 <div class="product-selector">
@@ -812,16 +815,16 @@
             document.body.style.overflow = 'auto';
         }
         
-        // GERAR MENSAGEM PARA WHATSAPP
+        // GERAR MENSAGEM PARA WHATSAPP (sem emojis)
         function generateMessage(clientName = '') {
             const baseUrl = window.location.origin + window.location.pathname.replace('index.html', '');
-            let message = `Olá! Tenho interesse em algumas das suas peças 😊\n\nSeleciono estas para consultar:\n\n`;
+            let message = `Olá! Tenho interesse em algumas das suas peças\n\nSeleciono estas para consultar:\n\n`;
             
             let productNumber = 1;
             selectedProducts.forEach(code => {
-                const photoUrl = `${baseUrl}fotos/${code}.jpeg`;  // CORREÇÃO: .jpg para .jpeg
+                const photoUrl = `${baseUrl}fotos/${code}.jpeg`;
                 message += `Peça #${code}\n`;
-                message += `📸 ${photoUrl}\n\n`;
+                message += `${photoUrl}\n\n`;
                 productNumber++;
             });
             
@@ -860,7 +863,6 @@
         
         // MOSTRAR NOTIFICAÇÃO
         function showNotification(text) {
-            // Remover notificação anterior se existir
             const existingNotification = document.querySelector('.notification');
             if (existingNotification) {
                 existingNotification.remove();
@@ -886,7 +888,6 @@
             
             document.body.appendChild(notification);
             
-            // Remover após 3 segundos
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.remove();
